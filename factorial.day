@@ -1,0 +1,28 @@
+Data is on Operations
+Worf is on Communications
+Crusher is on Helm
+
+Captain's log, stardate 1142.3
+Worf, open hailing frequencies
+tell them "please enter a number: "
+end transmission
+Worf, request new orders
+Computer, prepare input
+set heading 1
+prepare total
+Crusher, until input is 1,
+Computer, deploy input
+deploy total
+Data, combine power
+Computer, prepare total
+deploy input
+warp 1
+Data, decrease power
+Computer, prepare input
+confirm
+Worf, open hailing frequencies
+tell them "the answer is: "
+give them our information
+end transmission
+end log
+

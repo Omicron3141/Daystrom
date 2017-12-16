@@ -3,14 +3,16 @@
 <alias> = <iden> “is on” <iden> | <iden> “is now” <iden>
 
 <functionblock> = <function> “\n” <functionblock> | <mainfunction> “\n” <functionblock> | nil
-<function> = “Computer, prepare maneuver” <iden> “\n” <commandblock> “\n end maneuver”
+<function> = “Helm, prepare maneuver” <iden> “\n” <commandblock> “\n end maneuver”
 <mainfunction> = “Captain’s log” <garbage> “\n” <commandblock> “\n end log”
 
 <commandblock> = <command> “\n” <commandblock> | nil
 <command> = <addressee> “,” <instruction> 
-<command> = “Computer” <compinst> | “Communications” <comminst> | “Operations” <opsinst> | <iden> <generalinst> | <instruction> # implied previous addressee
+<command> = “Computer” <compinst> | “Communications” <comminst> | “Operations” <opsinst> | “Helm” <helminst> | <iden> <generalinst> | <instruction> # implied previous addressee
 
-<compinst> = “execute maneuver” <iden> | <numbergarbage> | “prepare” <iden> | “deploy” <iden>
+<compinst> =  <numbergarbage> | “prepare” <iden> | “deploy” <iden>
 <comminst> = “open hailing frequencies” | “send a distress signal” | “tell them” <string> | “give them our information” | “end transmission” | “request new orders”
 <opsint> = “reverse the polarity” | “increase power” | “decrease power” | “combine power” | “split power”
+<helminst> = “execute” <iden> | “until” <iden> “is” (<iden> | <number>) “, \n” <commandblock> “ \n confirm” | “if” <iden> “is” (<iden> | <number>) “, \n” <commandblock> (“otherwise” <commandblock>)? “\n confirm”
+
 
