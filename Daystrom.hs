@@ -16,7 +16,7 @@ main =
                          _ -> error "can only compile one file"
           -- Read the file (using lazy loading)
           file <- readFile fileName
-          let lowercaseFile = [Data.Char.toLower loweredString | loweredString <- file]
+          let lowercaseFile = map Data.Char.toLower file
           putStrLn ("'" ++ lowercaseFile ++ "'")
           let ast = DaystromParser.parseProgram lowercaseFile
 

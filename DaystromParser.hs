@@ -54,7 +54,10 @@ garbage :: Parser ()
 garbage = skipMany (alphanum <|> (sym ',') <|> (sym '.') <|> (sym ' '))
 
 command :: Parser Command
-command = (text "hi") <+-> endline >>=: \i -> Com i Swap
+command = ((ident <+-> punct <+-> whitespace) <+> instruction >>=: \(i, c) -> Com i c) <|> (instruction >>=: \c -> Com "" c)
+
+instruction :: Parser Instruction
+instruction = ((text "hi") <+-> endline) <-+> return Swap
 
 ---------------------------
 -- MAIN PARSING FUNCTION --
