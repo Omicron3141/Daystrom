@@ -18,6 +18,6 @@ main =
           file <- readFile fileName
           let lowercaseFile = map Data.Char.toLower file
           putStrLn ("'" ++ lowercaseFile ++ "'")
-          let ast = DaystromParser.parseProgram lowercaseFile
+          let ast = DaystromParser.parse lowercaseFile
 
           putStrLn (show ast)
