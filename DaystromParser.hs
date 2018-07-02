@@ -34,6 +34,16 @@ isNewLine []     = False
 isNewLine (c:[]) = elem c newLineChars
 isNewLine _      = False
 
+isWhiteSpace :: String -> Bool
+isWhiteSpace []     = False
+isWhiteSpace (c:[]) = (elem c newLineChars) || (Data.Char.isSeparator c)
+isWhiteSpace _      = False
+
+isPunctuation :: String -> Bool
+isPunctuation []     = False
+isPunctuation (c:[]) = Data.Char.isPunctuation c
+isPunctuation _      = False
+
 
 nextLineStartsWith :: [Token] -> [Token] -> Bool
 nextLineStartsWith [] tokens = True
@@ -64,11 +74,31 @@ consumeNewLine :: [Token] -> [Token]
 consumeNewLine (token:rest)
     | isNewLine token = rest
     | otherwise       = error ("Expected new line but found " ++ (show rest))
+
+consumeWhiteSpace :: [Token] -> [Token]
+consumeWhiteSpace [] = []
+consumeWhiteSpace (w:r)
+    | w == ""        = consumeWhiteSpace r
+    | isWhiteSpace w = consumeWhiteSpace r
+    | otherwise      = (w:r)
+
+possiblyConsumePunctuation :: [Token] -> [Token]
+possiblyConsumePunctuation [] = []
+possiblyConsumePunctuation (w:r)
+    | w == ""         = possiblyConsumePunctuation r
+    | isPunctuation w = possiblyConsumePunctuation r
+    | otherwise       = (w:r)
+
+endLineStatement :: [Token] -> [Token]
+endLineStatement tokens = consumeWhiteSpace ( consumeNewLine (possiblyConsumePunctuation tokens))
+
 ---------------------------
 --- CONSTANTS AND NAMES ---
 ---------------------------
 stations = ["helm", "computer", "operations", "communications"]
 aliasText = ["is", "on"]
+functionText = ["prepare", "maneuver"]
+mainFunctionText = ["captain's", "log"]
 -- UPDATE AS NEEDED
 reservedWords = stations ++ aliasText
 
@@ -101,8 +131,10 @@ parseAlias :: [Token] -> (Alias, [Token])
 parseAlias (iden:tokens1)
     | isIdentifier iden = let tokens2            = consume aliasText tokens1
                               (station, tokens3) = parseStation tokens2
-                              tokens4            = consumeNewLine tokens3
+                              tokens4            = endLineStatement tokens3
                           in ((StationAlias iden station), tokens4)
     | otherwise         = error ("Invalid identifier found in alias: " ++ iden)
 
 
+--parseFunctionBlock :: [Token] -> ([Function], [Token])
+--parseFunctionBlock :: 
